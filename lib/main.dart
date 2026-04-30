@@ -6,6 +6,8 @@ import 'app.dart';
 import 'core/services/location_service.dart';
 import 'features/adhkar/data/repositories/adhkar_repository.dart';
 import 'features/calendar/data/repositories/calendar_repository.dart';
+import 'features/masjid_finder/data/datasources/overpass_data_source.dart';
+import 'features/masjid_finder/data/repositories/masjid_repository.dart';
 import 'features/prayer_times/data/repositories/prayer_times_repository.dart';
 
 Future<void> main() async {
@@ -16,5 +18,8 @@ Future<void> main() async {
   Get.put<PrayerTimesRepository>(PrayerTimesRepository(prefs), permanent: true);
   Get.put<CalendarRepository>(CalendarRepository(), permanent: true);
   Get.put<AdhkarRepository>(AdhkarRepository(prefs), permanent: true);
+  final overpass = OverpassDataSource();
+  Get.put<OverpassDataSource>(overpass, permanent: true);
+  Get.put<MasjidRepository>(MasjidRepository(prefs, overpass), permanent: true);
   runApp(const RahmaApp());
 }
