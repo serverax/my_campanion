@@ -8,6 +8,7 @@ class AppRoutes {
   static const String masjidFinder = '/masjid-finder';
   static const String qibla = '/qibla';
   static const String askSheikh = '/ask-sheikh';
+  static const String askSheikhBrowse = '/ask-sheikh/browse';
   static const String adhkar = '/adhkar';
   static const String quranRadio = '/quran-radio';
   // alias to existing constant — keeps both spellings stable
