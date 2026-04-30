@@ -49,6 +49,9 @@ dependencies:
   # Qibla Compass feature
   flutter_compass: ^0.8.1
 
+  # Islamic Calendar feature
+  hijri: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

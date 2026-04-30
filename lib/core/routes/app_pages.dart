@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
 import '../../app.dart';
+import '../../features/calendar/presentation/bindings/calendar_binding.dart';
+import '../../features/calendar/presentation/pages/calendar_page.dart';
 import '../../features/prayer_times/presentation/bindings/prayer_times_binding.dart';
 import '../../features/prayer_times/presentation/pages/prayer_settings_page.dart';
 import '../../features/prayer_times/presentation/pages/prayer_times_page.dart';
@@ -27,6 +29,11 @@ class AppPages {
       name: AppRoutes.qibla,
       page: () => const QiblaPage(),
       binding: QiblaBinding(),
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.calendar,
+      page: () => const CalendarPage(),
+      binding: CalendarBinding(),
     ),
   ];
 }

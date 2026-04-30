@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'core/services/location_service.dart';
+import 'features/calendar/data/repositories/calendar_repository.dart';
 import 'features/prayer_times/data/repositories/prayer_times_repository.dart';
 
 Future<void> main() async {
@@ -12,5 +13,6 @@ Future<void> main() async {
   Get.put<SharedPreferences>(prefs, permanent: true);
   Get.put<LocationService>(LocationService(prefs), permanent: true);
   Get.put<PrayerTimesRepository>(PrayerTimesRepository(prefs), permanent: true);
+  Get.put<CalendarRepository>(CalendarRepository(), permanent: true);
   runApp(const RahmaApp());
 }
