@@ -8,7 +8,7 @@ import 'package:my_companion/features/prayer_times/domain/entities/prayer_settin
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('PrayerTimesRepository.calculate', () {
+  group('PrayerTimesRepository', () {
     late PrayerTimesRepository repo;
 
     setUp(() async {
@@ -17,7 +17,7 @@ void main() {
       repo = PrayerTimesRepository(prefs);
     });
 
-    test('produces 6 distinct, ordered times for Mecca on a fixed date', () {
+    test('produces ordered times for Mecca on the summer solstice', () {
       final mecca = Coordinates(21.4225, 39.8262);
       final times = repo.calculate(
         coords: mecca,
@@ -34,8 +34,7 @@ void main() {
       expect(times.asr.isBefore(times.maghrib), isTrue);
       expect(times.maghrib.isBefore(times.isha), isTrue);
 
-      // Total span from fajr to isha is ~13-18 hours at the summer solstice
-      // for low-latitude locations like Mecca (21.4°N).
+      // Mecca summer solstice: total fajr→isha span ~13-18 h
       final span = times.isha.difference(times.fajr);
       expect(span.inHours, inInclusiveRange(11, 19));
     });
@@ -75,15 +74,6 @@ void main() {
       expect(loaded.manualLatitude, isNull);
       expect(loaded.manualLongitude, isNull);
       expect(loaded.manualLocationName, isNull);
-    });
-
-    test('cached location round-trip', () async {
-      expect(repo.loadCachedLocation(), isNull);
-      await repo.cacheLastLocation(45.0, -73.5);
-      final cached = repo.loadCachedLocation();
-      expect(cached, isNotNull);
-      expect(cached!.lat, 45.0);
-      expect(cached.lon, -73.5);
     });
   });
 }

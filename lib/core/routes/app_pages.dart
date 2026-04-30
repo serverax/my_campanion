@@ -4,6 +4,8 @@ import '../../app.dart';
 import '../../features/prayer_times/presentation/bindings/prayer_times_binding.dart';
 import '../../features/prayer_times/presentation/pages/prayer_settings_page.dart';
 import '../../features/prayer_times/presentation/pages/prayer_times_page.dart';
+import '../../features/qibla/presentation/bindings/qibla_binding.dart';
+import '../../features/qibla/presentation/pages/qibla_page.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -20,6 +22,11 @@ class AppPages {
       name: AppRoutes.prayerSettings,
       page: () => const PrayerSettingsPage(),
       binding: PrayerTimesBinding(),
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.qibla,
+      page: () => const QiblaPage(),
+      binding: QiblaBinding(),
     ),
   ];
 }

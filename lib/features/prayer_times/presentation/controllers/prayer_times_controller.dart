@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:get/get.dart';
 
+import '../../../../core/services/location_service.dart';
 import '../../data/repositories/prayer_times_repository.dart';
 import '../../domain/entities/prayer_settings.dart';
 
 class PrayerTimesController extends GetxController {
-  PrayerTimesController(this._repo);
+  PrayerTimesController(this._repo, this._location);
   final PrayerTimesRepository _repo;
+  final LocationService _location;
 
   final RxBool isLoading = true.obs;
   final RxnString errorMessage = RxnString();
@@ -50,16 +52,16 @@ class PrayerTimesController extends GetxController {
           ? s.manualLocationName
           : 'Manual location';
     } else {
-      final cached = _repo.loadCachedLocation();
+      final cached = _location.loadCachedLocation();
       if (cached != null) {
         coords = Coordinates(cached.lat, cached.lon);
         label = 'Last known location';
       }
       try {
-        final pos = await _repo.requestCurrentLocation();
+        final pos = await _location.requestCurrentLocation();
         coords = Coordinates(pos.latitude, pos.longitude);
         label = 'Current location';
-        await _repo.cacheLastLocation(pos.latitude, pos.longitude);
+        await _location.cacheLocation(pos.latitude, pos.longitude);
       } on LocationException catch (e) {
         if (coords == null) {
           errorMessage.value = e.message;
@@ -105,7 +107,6 @@ class PrayerTimesController extends GetxController {
     currentPrayer.value = cur;
 
     if (next == Prayer.none) {
-      // After isha — show fajr of tomorrow
       final tomorrow = DateTime(now.year, now.month, now.day + 1);
       final tomorrowPt = _repo.calculate(
         coords: c,
@@ -114,13 +115,6 @@ class PrayerTimesController extends GetxController {
       );
       nextPrayer.value = Prayer.fajr;
       timeUntilNext.value = tomorrowPt.fajr.difference(now);
-
-      // If date rolled over while running, recalculate today's table
-      if (now.hour < tomorrowPt.fajr.hour) {
-        // still same calendar day on local clock
-      } else if (now.hour == 0) {
-        prayerTimes.value = tomorrowPt;
-      }
     } else {
       nextPrayer.value = next;
       final t = pt.timeForPrayer(next);

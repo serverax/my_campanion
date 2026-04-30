@@ -64,9 +64,15 @@ class HomePage extends StatelessWidget {
                     label: const Text('Prayer Times'),
                     onPressed: () => Get.toNamed(AppRoutes.prayerTimes),
                   ),
+                  const SizedBox(height: AppSizes.md),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.explore),
+                    label: const Text('Qibla'),
+                    onPressed: () => Get.toNamed(AppRoutes.qibla),
+                  ),
                   const SizedBox(height: AppSizes.lg),
                   Text(
-                    'More features coming: Quran, Qibla, Masjid Finder, '
+                    'More features coming: Quran, Masjid Finder, '
                     'Adhkar, Quran Radio, Calendar.',
                     style: AppTextStyles.bodySmall(),
                   ),

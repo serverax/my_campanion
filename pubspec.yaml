@@ -46,6 +46,9 @@ dependencies:
   geolocator: ^13.0.0
   shared_preferences: ^2.3.0
 
+  # Qibla Compass feature
+  flutter_compass: ^0.8.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
