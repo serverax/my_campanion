@@ -1,0 +1,8 @@
+title: Rahma
+description: Offline-first Islamic companion app
+theme: jekyll-theme-minimal
+markdown: kramdown
+permalink: /:title
+include:
+  - PRIVACY_POLICY.md
+  - DATA_SAFETY.md
