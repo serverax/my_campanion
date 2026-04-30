@@ -88,9 +88,15 @@ class HomePage extends StatelessWidget {
                     label: const Text('Masjid Finder'),
                     onPressed: () => Get.toNamed(AppRoutes.masjidFinder),
                   ),
+                  const SizedBox(height: AppSizes.md),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.menu_book_outlined),
+                    label: const Text('Quran'),
+                    onPressed: () => Get.toNamed(AppRoutes.quran),
+                  ),
                   const SizedBox(height: AppSizes.lg),
                   Text(
-                    'More features coming: Quran Reader, Quran Radio.',
+                    'More features coming: Quran Radio.',
                     style: AppTextStyles.bodySmall(),
                   ),
                 ],

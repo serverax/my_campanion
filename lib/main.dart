@@ -9,6 +9,8 @@ import 'features/calendar/data/repositories/calendar_repository.dart';
 import 'features/masjid_finder/data/datasources/overpass_data_source.dart';
 import 'features/masjid_finder/data/repositories/masjid_repository.dart';
 import 'features/prayer_times/data/repositories/prayer_times_repository.dart';
+import 'features/quran/data/datasources/quran_local_data_source.dart';
+import 'features/quran/data/repositories/quran_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,5 +23,11 @@ Future<void> main() async {
   final overpass = OverpassDataSource();
   Get.put<OverpassDataSource>(overpass, permanent: true);
   Get.put<MasjidRepository>(MasjidRepository(prefs, overpass), permanent: true);
+  final quranSource = QuranLocalDataSource();
+  Get.put<QuranLocalDataSource>(quranSource, permanent: true);
+  Get.put<QuranRepository>(
+    QuranRepository(quranSource, prefs),
+    permanent: true,
+  );
   runApp(const RahmaApp());
 }
