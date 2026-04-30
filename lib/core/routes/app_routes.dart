@@ -10,6 +10,8 @@ class AppRoutes {
   static const String askSheikh = '/ask-sheikh';
   static const String adhkar = '/adhkar';
   static const String quranRadio = '/quran-radio';
+  // alias to existing constant — keeps both spellings stable
+
   static const String calendar = '/calendar';
   static const String settings = '/settings';
   static const String about = '/about';

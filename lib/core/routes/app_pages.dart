@@ -14,6 +14,8 @@ import '../../features/qibla/presentation/bindings/qibla_binding.dart';
 import '../../features/qibla/presentation/pages/qibla_page.dart';
 import '../../features/quran/presentation/bindings/quran_binding.dart';
 import '../../features/quran/presentation/pages/surah_list_page.dart';
+import '../../features/quran_radio/presentation/bindings/quran_radio_binding.dart';
+import '../../features/quran_radio/presentation/pages/quran_radio_page.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -55,6 +57,11 @@ class AppPages {
       name: AppRoutes.quran,
       page: () => const SurahListPage(),
       binding: QuranBinding(),
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.quranRadio,
+      page: () => const QuranRadioPage(),
+      binding: QuranRadioBinding(),
     ),
   ];
 }

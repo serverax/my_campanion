@@ -94,9 +94,16 @@ class HomePage extends StatelessWidget {
                     label: const Text('Quran'),
                     onPressed: () => Get.toNamed(AppRoutes.quran),
                   ),
+                  const SizedBox(height: AppSizes.md),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.headphones),
+                    label: const Text('Quran Radio'),
+                    onPressed: () => Get.toNamed(AppRoutes.quranRadio),
+                  ),
                   const SizedBox(height: AppSizes.lg),
                   Text(
-                    'More features coming: Quran Radio.',
+                    '7 of 8 features live. Reciter: Yaser Al-Dosari '
+                    '(mp3quran.net stream).',
                     style: AppTextStyles.bodySmall(),
                   ),
                 ],
