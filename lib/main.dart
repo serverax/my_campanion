@@ -7,6 +7,7 @@ import 'app.dart';
 import 'core/services/location_service.dart';
 import 'features/adhkar/data/repositories/adhkar_repository.dart';
 import 'features/calendar/data/repositories/calendar_repository.dart';
+import 'features/islamic_kb/data/repositories/islamic_kb_repository.dart';
 import 'features/masjid_finder/data/datasources/overpass_data_source.dart';
 import 'features/masjid_finder/data/repositories/masjid_repository.dart';
 import 'features/prayer_times/data/repositories/prayer_times_repository.dart';
@@ -41,6 +42,7 @@ Future<void> main() async {
     QuranRadioRepository(quranRepo, prefs),
     permanent: true,
   );
+  Get.put<IslamicKbRepository>(IslamicKbRepository(prefs), permanent: true);
 
   runApp(const RahmaApp());
 }

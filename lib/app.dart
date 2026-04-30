@@ -100,10 +100,15 @@ class HomePage extends StatelessWidget {
                     label: const Text('Quran Radio'),
                     onPressed: () => Get.toNamed(AppRoutes.quranRadio),
                   ),
+                  const SizedBox(height: AppSizes.md),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.library_books_outlined),
+                    label: const Text('Islamic Knowledge'),
+                    onPressed: () => Get.toNamed(AppRoutes.askSheikh),
+                  ),
                   const SizedBox(height: AppSizes.lg),
                   Text(
-                    '7 of 8 features live. Reciter: Yaser Al-Dosari '
-                    '(mp3quran.net stream).',
+                    '8 of 8 features live. Sadaqa Jareya for the Ummah.',
                     style: AppTextStyles.bodySmall(),
                   ),
                 ],
