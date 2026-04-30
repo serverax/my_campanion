@@ -41,6 +41,11 @@ dependencies:
   # i18n / locale formatting
   intl: any
 
+  # Prayer Times feature
+  adhan: ^2.0.0
+  geolocator: ^13.0.0
+  shared_preferences: ^2.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

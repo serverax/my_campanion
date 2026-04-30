@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import 'core/bindings/initial_bindings.dart';
-import 'core/constants/app_colors.dart';
 import 'core/constants/app_sizes.dart';
 import 'core/routes/app_pages.dart';
 import 'core/routes/app_routes.dart';
@@ -55,38 +54,21 @@ class HomePage extends StatelessWidget {
                   Text('Welcome', style: AppTextStyles.h1()),
                   const SizedBox(height: AppSizes.sm),
                   Text(
-                    'Foundation in place. Theme, colors, typography, '
-                    'routing, and 8 feature folders are wired up.',
-                    style: AppTextStyles.bodyRegular(),
-                  ),
-                  const SizedBox(height: AppSizes.xl),
-                  Text(
-                    'السلام عليكم',
-                    style: AppTextStyles.h3(),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: AppSizes.xs),
-                  Text(
                     'بسم الله الرحمن الرحيم',
                     style: AppTextStyles.quranArabic(),
                     textDirection: TextDirection.rtl,
                   ),
                   const SizedBox(height: AppSizes.xl),
-                  _PaletteSwatches(),
-                  const SizedBox(height: AppSizes.xl),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Primary action'),
-                  ),
-                  const SizedBox(height: AppSizes.md),
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: const Text('Secondary action'),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.access_time),
+                    label: const Text('Prayer Times'),
+                    onPressed: () => Get.toNamed(AppRoutes.prayerTimes),
                   ),
                   const SizedBox(height: AppSizes.lg),
                   Text(
-                    'caption text — secondary information',
-                    style: AppTextStyles.caption(),
+                    'More features coming: Quran, Qibla, Masjid Finder, '
+                    'Adhkar, Quran Radio, Calendar.',
+                    style: AppTextStyles.bodySmall(),
                   ),
                 ],
               ),
@@ -96,47 +78,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-class _PaletteSwatches extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final swatches = <_Swatch>[
-      const _Swatch('Dark green', AppColors.primaryDarkGreen),
-      const _Swatch('Green', AppColors.primaryGreen),
-      const _Swatch('Gold', AppColors.accentGold),
-      const _Swatch('Off-white', AppColors.bgOffWhite),
-      const _Swatch('Soft green', AppColors.bgSoftGreen),
-    ];
-    return Wrap(
-      spacing: AppSizes.md,
-      runSpacing: AppSizes.md,
-      children: swatches
-          .map(
-            (s) => Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: s.color,
-                    borderRadius: BorderRadius.circular(AppSizes.radiusCards),
-                    border: Border.all(color: AppColors.divider),
-                  ),
-                ),
-                const SizedBox(height: AppSizes.xs),
-                Text(s.label, style: AppTextStyles.caption()),
-              ],
-            ),
-          )
-          .toList(),
-    );
-  }
-}
-
-class _Swatch {
-  final String label;
-  final Color color;
-  const _Swatch(this.label, this.color);
 }

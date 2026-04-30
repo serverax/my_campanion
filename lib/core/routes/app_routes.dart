@@ -4,6 +4,7 @@ class AppRoutes {
   static const String home = '/';
   static const String quran = '/quran';
   static const String prayerTimes = '/prayer-times';
+  static const String prayerSettings = '/prayer-times/settings';
   static const String masjidFinder = '/masjid-finder';
   static const String qibla = '/qibla';
   static const String askSheikh = '/ask-sheikh';

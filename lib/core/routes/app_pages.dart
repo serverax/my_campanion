@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 
 import '../../app.dart';
+import '../../features/prayer_times/presentation/bindings/prayer_times_binding.dart';
+import '../../features/prayer_times/presentation/pages/prayer_settings_page.dart';
+import '../../features/prayer_times/presentation/pages/prayer_times_page.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -8,9 +11,15 @@ class AppPages {
 
   static final List<GetPage<dynamic>> pages = <GetPage<dynamic>>[
     GetPage<dynamic>(name: AppRoutes.home, page: () => const HomePage()),
-    // Feature routes will be appended here as they're built:
-    //   GetPage(name: AppRoutes.quran,        page: () => const SurahListPage(), binding: QuranBinding()),
-    //   GetPage(name: AppRoutes.prayerTimes,  page: () => const PrayerTimesPage(), binding: PrayerTimesBinding()),
-    //   ...
+    GetPage<dynamic>(
+      name: AppRoutes.prayerTimes,
+      page: () => const PrayerTimesPage(),
+      binding: PrayerTimesBinding(),
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.prayerSettings,
+      page: () => const PrayerSettingsPage(),
+      binding: PrayerTimesBinding(),
+    ),
   ];
 }
