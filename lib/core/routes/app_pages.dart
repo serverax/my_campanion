@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
 import '../../app.dart';
+import '../../features/adhkar/presentation/bindings/adhkar_binding.dart';
+import '../../features/adhkar/presentation/pages/adhkar_categories_page.dart';
 import '../../features/calendar/presentation/bindings/calendar_binding.dart';
 import '../../features/calendar/presentation/pages/calendar_page.dart';
 import '../../features/prayer_times/presentation/bindings/prayer_times_binding.dart';
@@ -34,6 +36,11 @@ class AppPages {
       name: AppRoutes.calendar,
       page: () => const CalendarPage(),
       binding: CalendarBinding(),
+    ),
+    GetPage<dynamic>(
+      name: AppRoutes.adhkar,
+      page: () => const AdhkarCategoriesPage(),
+      binding: AdhkarBinding(),
     ),
   ];
 }
