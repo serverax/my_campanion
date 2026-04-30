@@ -1,4 +1,4 @@
-package com.example.my_companion
+package com.rahma.rahma_app
 
 import io.flutter.embedding.android.FlutterActivity
 
