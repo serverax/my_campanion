@@ -66,12 +66,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+  # Tooling for icon + splash generation and the one-shot resize script
+  flutter_launcher_icons: ^0.14.1
+  flutter_native_splash: ^2.4.0
+  image: ^4.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -87,6 +87,37 @@ flutter:
   assets:
     - assets/data/quran-ar.json
     - assets/data/quran-en.json
+    - assets/icon/app_icon.png
+    - assets/icon/app_icon_foreground.png
+    - assets/images/logo.png
+    - assets/images/99_names.png
+    - assets/images/adhkar.png
+    - assets/images/ahlam.png
+    - assets/images/books.png
+    - assets/images/duaa.png
+    - assets/images/masjid.png
+    - assets/images/qibla.jpg
+    - assets/images/quraan.png
+    - assets/images/shekh.png
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: false
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#0F3D2E"
+  adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
+  min_sdk_android: 23
+  remove_alpha_ios: false
+
+flutter_native_splash:
+  color: "#0F3D2E"
+  image: assets/icon/app_icon_foreground.png
+  android: true
+  ios: false
+  android_12:
+    color: "#0F3D2E"
+    image: assets/icon/app_icon_foreground.png
+  fullscreen: false
 
   # To add assets to your application, add an assets section, like this:
   # assets:

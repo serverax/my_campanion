@@ -11,6 +11,7 @@ void main() {
     await tester.pump();
 
     expect(find.byType(MaterialApp), findsOneWidget);
-    expect(find.text('Welcome'), findsOneWidget);
+    expect(find.text('Prayer Times'), findsWidgets);
+    expect(find.text('Quran'), findsWidgets);
   });
 }

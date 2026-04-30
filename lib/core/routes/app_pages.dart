@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../app.dart';
+import '../../features/about/presentation/pages/about_page.dart';
 import '../../features/adhkar/presentation/bindings/adhkar_binding.dart';
 import '../../features/adhkar/presentation/pages/adhkar_categories_page.dart';
 import '../../features/calendar/presentation/bindings/calendar_binding.dart';
@@ -70,5 +71,6 @@ class AppPages {
       page: () => const IslamicKbHomePage(),
       binding: IslamicKbBinding(),
     ),
+    GetPage<dynamic>(name: AppRoutes.about, page: () => const AboutPage()),
   ];
 }
