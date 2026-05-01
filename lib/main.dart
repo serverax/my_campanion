@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -18,12 +19,15 @@ import 'features/quran_radio/data/repositories/quran_radio_repository.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.rahma.rahma_app.audio',
-    androidNotificationChannelName: 'Quran Radio',
-    androidNotificationOngoing: true,
-    androidStopForegroundOnPause: true,
-  );
+  // just_audio_background is Android/iOS only; calling on web throws.
+  if (!kIsWeb) {
+    await JustAudioBackground.init(
+      androidNotificationChannelId: 'com.rahma.rahma_app.audio',
+      androidNotificationChannelName: 'Quran Radio',
+      androidNotificationOngoing: true,
+      androidStopForegroundOnPause: true,
+    );
+  }
 
   final prefs = await SharedPreferences.getInstance();
   Get.put<SharedPreferences>(prefs, permanent: true);

@@ -6,3 +6,8 @@ permalink: /:title
 include:
   - PRIVACY_POLICY.md
   - DATA_SAFETY.md
+# Don't let Jekyll process the Flutter web build under app/
+exclude:
+  - app/.well-known
+keep_files:
+  - app
