@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'core/services/location_service.dart';
+import 'core/services/unified_search_service.dart';
 import 'features/adhkar/data/repositories/adhkar_repository.dart';
 import 'features/calendar/data/repositories/calendar_repository.dart';
 import 'features/islamic_kb/data/repositories/islamic_kb_repository.dart';
@@ -46,7 +47,17 @@ Future<void> main() async {
     QuranRadioRepository(quranRepo, prefs),
     permanent: true,
   );
-  Get.put<IslamicKbRepository>(IslamicKbRepository(prefs), permanent: true);
+  final kbRepo = IslamicKbRepository(prefs);
+  Get.put<IslamicKbRepository>(kbRepo, permanent: true);
+
+  Get.put<UnifiedSearchService>(
+    UnifiedSearchService(
+      kb: kbRepo,
+      quran: quranRepo,
+      adhkar: Get.find<AdhkarRepository>(),
+    ),
+    permanent: true,
+  );
 
   runApp(const RahmaApp());
 }

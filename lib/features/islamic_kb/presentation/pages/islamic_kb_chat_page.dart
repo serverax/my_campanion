@@ -4,7 +4,11 @@ import 'package:get/get.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../../core/services/unified_search_service.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../../adhkar/domain/entities/dhikr.dart';
+import '../../../quran/domain/entities/ayah.dart';
+import '../../../quran/presentation/pages/surah_reader_page.dart';
 import '../../data/repositories/islamic_kb_repository.dart';
 import '../../domain/entities/islamic_qa_data.dart';
 import '../../domain/entities/islamic_question.dart';
@@ -25,12 +29,14 @@ class _IslamicKbChatPageState extends State<IslamicKbChatPage> {
   final TextEditingController _input = TextEditingController();
   final ScrollController _scroll = ScrollController();
   final List<_Turn> _turns = <_Turn>[];
-  late final IslamicKbRepository _repo;
+  late final IslamicKbRepository _kb;
+  late final UnifiedSearchService _search;
 
   @override
   void initState() {
     super.initState();
-    _repo = Get.find<IslamicKbRepository>();
+    _kb = Get.find<IslamicKbRepository>();
+    _search = Get.find<UnifiedSearchService>();
     _turns.add(const _Turn.greeting());
   }
 
@@ -41,21 +47,27 @@ class _IslamicKbChatPageState extends State<IslamicKbChatPage> {
     super.dispose();
   }
 
-  void _ask(String raw) {
+  Future<void> _ask(String raw) async {
     final q = raw.trim();
     if (q.isEmpty) return;
-    final results = _repo.search(q);
+    setState(() => _turns.add(_Turn.user(q)));
+    _input.clear();
+
+    final hits = await _search.search(q);
     setState(() {
-      _turns.add(_Turn.user(q));
-      if (results.isEmpty) {
+      if (hits.isEmpty) {
         _turns.add(const _Turn.notFound());
       } else {
-        _turns.add(_Turn.answer(results.first));
-        // Record view in history
-        _repo.recordView(results.first.id);
+        // Cap at 3 to keep the chat readable
+        for (final h in hits.take(3)) {
+          _turns.add(_Turn.hit(h));
+          if (h.source == SearchSource.kb) {
+            _kb.recordView(h.id);
+          }
+        }
       }
     });
-    _input.clear();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scroll.hasClients) {
         _scroll.animateTo(
@@ -135,18 +147,17 @@ class _DisclaimerStrip extends StatelessWidget {
   }
 }
 
-enum _TurnKind { greeting, user, answer, notFound }
+enum _TurnKind { greeting, user, hit, notFound }
 
 class _Turn {
   final _TurnKind kind;
   final String? text;
-  final IslamicQuestion? entry;
+  final SearchHit? hit;
 
-  const _Turn._({required this.kind, this.text, this.entry});
+  const _Turn._({required this.kind, this.text, this.hit});
   const _Turn.greeting() : this._(kind: _TurnKind.greeting);
   const _Turn.user(String text) : this._(kind: _TurnKind.user, text: text);
-  const _Turn.answer(IslamicQuestion e)
-    : this._(kind: _TurnKind.answer, entry: e);
+  const _Turn.hit(SearchHit h) : this._(kind: _TurnKind.hit, hit: h);
   const _Turn.notFound() : this._(kind: _TurnKind.notFound);
 }
 
@@ -162,8 +173,8 @@ class _BubbleFor extends StatelessWidget {
         return _GreetingBubble(onQuickAsk: onQuickAsk);
       case _TurnKind.user:
         return _UserBubble(text: turn.text!);
-      case _TurnKind.answer:
-        return _AnswerBubble(entry: turn.entry!);
+      case _TurnKind.hit:
+        return _HitBubble(hit: turn.hit!);
       case _TurnKind.notFound:
         return const _NotFoundBubble();
     }
@@ -302,9 +313,32 @@ class _QuickPrompt {
   const _QuickPrompt(this.emoji, this.label);
 }
 
-class _AnswerBubble extends StatelessWidget {
-  const _AnswerBubble({required this.entry});
-  final IslamicQuestion entry;
+class _HitBubble extends StatelessWidget {
+  const _HitBubble({required this.hit});
+  final SearchHit hit;
+
+  Color get _sourceChipColor {
+    switch (hit.source) {
+      case SearchSource.kb:
+        return AppColors.primaryGreen;
+      case SearchSource.adhkar:
+        return AppColors.accentGold;
+      case SearchSource.quran:
+        return AppColors.primaryDarkGreen;
+    }
+  }
+
+  void _open(BuildContext context) {
+    final p = hit.payload;
+    if (p is IslamicQuestion) {
+      Get.to<void>(() => IslamicKbDetailPage(entry: p));
+    } else if (p is Ayah) {
+      Get.to<void>(() => SurahReaderPage(surahNumber: p.surahNumber));
+    } else if (p is Dhikr) {
+      // Adhkar entries live under the categories list; open that page
+      Get.toNamed(AppRoutes.adhkar);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -347,15 +381,15 @@ class _AnswerBubble extends StatelessWidget {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.bgSoftGreen,
+                        color: _sourceChipColor,
                         borderRadius: BorderRadius.circular(
                           AppSizes.radiusChips,
                         ),
                       ),
                       child: Text(
-                        entry.category.englishName,
+                        hit.sourceLabel,
                         style: AppTextStyles.caption().copyWith(
-                          color: AppColors.primaryDarkGreen,
+                          color: AppColors.bgWhite,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -364,41 +398,39 @@ class _AnswerBubble extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSizes.sm),
                 Text(
-                  entry.questionEn,
+                  hit.title,
                   style: AppTextStyles.bodyRegular().copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.primaryDarkGreen,
                   ),
                 ),
-                const SizedBox(height: AppSizes.xs),
-                Text(
-                  entry.questionAr,
-                  textDirection: TextDirection.rtl,
-                  style: AppTextStyles.arabicBody().copyWith(
-                    fontSize: 14,
-                    color: AppColors.textSecondary,
+                if (hit.arabic != null && hit.arabic!.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: AppSizes.xs),
+                  Text(
+                    hit.arabic!,
+                    textDirection: TextDirection.rtl,
+                    style: AppTextStyles.quranArabic().copyWith(
+                      fontSize: 18,
+                      color: AppColors.textSecondary,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
+                ],
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: AppSizes.sm),
                   child: Divider(height: 1),
                 ),
                 Text(
-                  entry.answerEn,
+                  hit.snippet,
                   style: AppTextStyles.bodyRegular().copyWith(height: 1.55),
                 ),
-                const SizedBox(height: AppSizes.md),
-                _MetaChip(
-                  icon: Icons.menu_book_outlined,
-                  label: 'Source',
-                  text: entry.source,
-                ),
-                if (entry.scholarlyNote != null) ...<Widget>[
-                  const SizedBox(height: AppSizes.sm),
+                if (hit.sourceCitation != null) ...<Widget>[
+                  const SizedBox(height: AppSizes.md),
                   _MetaChip(
-                    icon: Icons.school_outlined,
-                    label: 'Scholarly note',
-                    text: entry.scholarlyNote!,
+                    icon: Icons.menu_book_outlined,
+                    label: 'Source',
+                    text: hit.sourceCitation!,
                   ),
                 ],
                 const SizedBox(height: AppSizes.sm),
@@ -413,8 +445,7 @@ class _AnswerBubble extends StatelessWidget {
                   child: TextButton.icon(
                     icon: const Icon(Icons.open_in_full, size: AppSizes.iconSm),
                     label: const Text('Open full entry'),
-                    onPressed: () =>
-                        Get.to<void>(() => IslamicKbDetailPage(entry: entry)),
+                    onPressed: () => _open(context),
                   ),
                 ),
               ],

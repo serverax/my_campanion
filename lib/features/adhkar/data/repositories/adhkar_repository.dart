@@ -38,6 +38,23 @@ class AdhkarRepository {
     }
   }
 
+  /// Plain substring search across the Adhkar corpus (translation,
+  /// transliteration, Arabic, source). Case-insensitive on the Latin
+  /// portion; Arabic match is exact-substring against the trimmed query.
+  List<Dhikr> search(String query) {
+    final q = query.trim();
+    if (q.isEmpty) return const <Dhikr>[];
+    final ql = q.toLowerCase();
+    return AdhkarData.all.where((d) {
+      if (d.translation.toLowerCase().contains(ql)) return true;
+      final tr = d.transliteration;
+      if (tr != null && tr.toLowerCase().contains(ql)) return true;
+      if (d.arabic.contains(q)) return true;
+      if (d.source.toLowerCase().contains(ql)) return true;
+      return false;
+    }).toList();
+  }
+
   void _resetIfNewDay() {
     final today = _todayKey();
     final stored = _prefs.getString(_kDateKey);
