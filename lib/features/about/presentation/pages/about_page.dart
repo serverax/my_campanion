@@ -10,6 +10,8 @@ class AboutPage extends StatelessWidget {
 
   static const String _privacyUrl =
       'https://serverax.github.io/my_campanion/PRIVACY_POLICY';
+  static const String _termsUrl =
+      'https://serverax.github.io/my_campanion/TERMS';
   static const String _dataSafetyUrl =
       'https://serverax.github.io/my_campanion/DATA_SAFETY';
   static const String _sourceUrl = 'https://github.com/serverax/my_campanion';
@@ -120,6 +122,11 @@ class AboutPage extends StatelessWidget {
                         icon: Icons.privacy_tip_outlined,
                         label: 'Privacy policy',
                         onTap: () => _open(_privacyUrl),
+                      ),
+                      _LinkRow(
+                        icon: Icons.gavel_outlined,
+                        label: 'Terms of service',
+                        onTap: () => _open(_termsUrl),
                       ),
                       _LinkRow(
                         icon: Icons.shield_outlined,

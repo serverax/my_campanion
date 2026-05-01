@@ -19,6 +19,7 @@ The signed AAB + APK for v1.0.0 is attached to the GitHub Release:
 ## Documents
 
 - [Privacy Policy](./PRIVACY_POLICY)
+- [Terms of Service](./TERMS)
 - [Data Safety form answers](./DATA_SAFETY)
 
 ## Source
